@@ -1,7 +1,7 @@
 
 # Week 1 Challenge!
 
-<img src='Dannys-Diner.png' alt="Danny's Diner Logo">
+<img src='Dannys-Diner.png' alt="Danny's Diner Logo" width="400" height="500">
 For more information about the <a href="https://8weeksqlchallenge.com/case-study-1/">week 1</a> challenge. 
 
 ### Introduction
@@ -17,5 +17,5 @@ Danny is proving me 3 datasets to use for the analysis
  - Members
 Along with an entity relationship diagram (ERD henceforth).
 
-<img src='ERD.png' alt="Entity Relationship Diagram for Week 1">
+<img src='ERD.png' alt="Entity Relationship Diagram for Week 1" width="500" height="500">
 
