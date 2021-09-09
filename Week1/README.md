@@ -17,5 +17,5 @@ Danny is proving me 3 datasets to use for the analysis
  - Members
 Along with an entity relationship diagram (ERD henceforth).
 
-<img src='ERD.png' alt="Entity Relationship Diagram for Week 1" width="500" height="500">
+<img src='ERD.png' alt="Entity Relationship Diagram for Week 1" width=auto height="500">
 
