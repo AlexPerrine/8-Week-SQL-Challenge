@@ -8,4 +8,4 @@ Over the next few weeks I will look to solve the business problems the ficticiou
 ### First Challenge
 The first challenge that I have will be solving questions for Danny's Diner. The Japanese restaurant is looking to expand on their loyalty program.
 
-<a href="https://8weeksqlchallenge.com/case-study-1/" target="_blank"><img src='Week1/Dannys-Diner.png' alt="Danny's Diner Logo" width=auto height="500"></a>
+<a href="https://8weeksqlchallenge.com/case-study-1/" target="_blank" rel="noopener noreferrer"><img src='Week1/Dannys-Diner.png' alt="Danny's Diner Logo" width=auto height="500"></a>
