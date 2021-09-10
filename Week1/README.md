@@ -62,9 +62,82 @@ ORDER BY frequency DESC
 
 Maybe this is why customer C hasn't spent as much
 
-What was the first item from the menu purchased by each customer?
-What is the most purchased item on the menu and how many times was it purchased by all customers?
-Which item was the most popular for each customer?
+3. What was the first item from the menu purchased by each customer?
+
+```sql
+with partition_orders as(
+SELECT 
+  sales.customer_id AS customer,
+  menu.product_name,
+  ROW_NUMBER() OVER(
+    PARTITION BY sales.customer_id
+      ORDER BY sales.order_date, sales.product_id) AS item_id
+FROM dannys_diner.sales AS sales
+JOIN dannys_diner.menu as menu
+ON sales.product_id = menu.product_id
+)
+
+SELECT *
+FROM partition_orders
+WHERE item_id = 1
+```
+
+| customer | product\_name | item\_id |
+| -------- | ------------- | -------- |
+| A        | sushi         | 1        |
+| B        | curry         | 1        |
+| C        | ramen         | 1        |
+
+4. What is the most purchased item on the menu and how many times was it purchased by all customers?
+
+```sql
+SELECT
+  menu.product_name AS menu_item,
+  COUNT(menu.product_name) AS frequency
+FROM dannys_diner.sales AS sales
+JOIN dannys_diner.menu AS menu
+ON sales.product_id = menu.product_id
+GROUP BY 1
+LIMIT 1
+```
+
+| menu\_item | frequency |
+| ---------- | --------- |
+| ramen      | 8         |
+
+
+5. Which item was the most popular for each customer?
+
+```sql
+with groupby_counts AS(
+SELECT 
+  sales.customer_id AS customer,
+  menu.product_name AS menu_item,
+  COUNT(*) AS frequency
+FROM dannys_diner.sales AS sales
+JOIN dannys_diner.menu AS menu
+ON sales.product_id = menu.product_id
+GROUP BY 1,2
+),
+
+rank_count AS (
+SELECT
+  *,
+  RANK () OVER(PARTITION BY customer ORDER BY frequency DESC) AS top_choice
+FROM groupby_counts
+)
+
+SELECT *
+FROM rank_count
+```
+| customer | menu\_item | frequency | top\_choice |
+| -------- | ---------- | --------- | ----------- |
+| A        | ramen      | 3         | 1           |
+| B        | sushi      | 2         | 1           |
+| B        | curry      | 2         | 1           |
+| B        | ramen      | 2         | 1           |
+| C        | ramen      | 3         | 1           |
+
 Which item was purchased first by the customer after they became a member?
 Which item was purchased just before the customer became a member?
 What is the total items and amount spent for each member before they became a member?
