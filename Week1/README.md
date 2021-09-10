@@ -139,8 +139,94 @@ WHERE top_choice = 1
 | B        | ramen      | 2         | 1           |
 | C        | ramen      | 3         | 1           |
 
-Which item was purchased first by the customer after they became a member?
-Which item was purchased just before the customer became a member?
-What is the total items and amount spent for each member before they became a member?
+
+### Note:
+To answer the following questions, I am creating the following temp table rather than having the table as a CTE in all the queries.
+
+```sql
+DROP TABLE IF EXISTS membership;
+CREATE TEMP TABLE membership AS
+SELECT
+  sales.customer_id,
+  sales.order_date,
+  menu.product_name,
+  menu.price,
+  members.join_date,
+  CASE WHEN sales.order_date >= members.join_date
+    THEN 'x'
+    ELSE ''
+    END AS member
+FROM dannys_diner.sales AS sales
+JOIN dannys_diner.menu AS menu
+ON sales.product_id = menu.product_id
+JOIN dannys_diner.members AS members
+ON sales.customer_id = members.customer_id
+WHERE join_date IS NOT NULL
+ORDER BY member DESC;
+```
+
+| customer\_id | order\_date              | product\_name | price | join\_date               | member |
+| ------------ | ------------------------ | ------------- | ----- | ------------------------ | ------ |
+| A            | 2021-01-07T00:00:00.000Z | curry         | 15    | 2021-01-07T00:00:00.000Z | x      |
+| A            | 2021-01-11T00:00:00.000Z | ramen         | 12    | 2021-01-07T00:00:00.000Z | x      |
+| A            | 2021-01-11T00:00:00.000Z | ramen         | 12    | 2021-01-07T00:00:00.000Z | x      |
+| A            | 2021-01-10T00:00:00.000Z | ramen         | 12    | 2021-01-07T00:00:00.000Z | x      |
+| B            | 2021-01-11T00:00:00.000Z | sushi         | 10    | 2021-01-09T00:00:00.000Z | x      |
+| B            | 2021-01-16T00:00:00.000Z | ramen         | 12    | 2021-01-09T00:00:00.000Z | x      |
+| B            | 2021-02-01T00:00:00.000Z | ramen         | 12    | 2021-01-09T00:00:00.000Z | x      |
+| B            | 2021-01-02T00:00:00.000Z | curry         | 15    | 2021-01-09T00:00:00.000Z |        |
+| B            | 2021-01-01T00:00:00.000Z | curry         | 15    | 2021-01-09T00:00:00.000Z |        |
+| A            | 2021-01-01T00:00:00.000Z | sushi         | 10    | 2021-01-07T00:00:00.000Z |        |
+| A            | 2021-01-01T00:00:00.000Z | curry         | 15    | 2021-01-07T00:00:00.000Z |        |
+| B            | 2021-01-04T00:00:00.000Z | sushi         | 10    | 2021-01-09T00:00:00.000Z |        |
+
+
+6. Which item was purchased first by the customer after they became a member?
+
+```sql
+SELECT 
+  customer_id AS customer,
+  product_name AS item,
+  MIN(join_date) AS join_date
+FROM membership
+WHERE member = 'x'
+GROUP BY 1,2
+```
+
+| customer | item  | join\_date               |
+| -------- | ----- | ------------------------ |
+| A        | curry | 2021-01-07T00:00:00.000Z |
+| A        | ramen | 2021-01-07T00:00:00.000Z |
+| B        | ramen | 2021-01-09T00:00:00.000Z |
+| B        | sushi | 2021-01-09T00:00:00.000Z |
+
+7. Which item was purchased just before the customer became a member?
+
+```sql
+with groupby_counts AS(
+SELECT 
+  customer_id AS customer,
+  product_name AS item,
+  order_date,
+  RANK() OVER(
+    PARTITION BY customer_id ORDER BY order_date) AS last_item
+FROM membership
+WHERE member != 'x'
+GROUP BY 1,2,3
+ORDER BY 1
+)
+
+SELECT *
+FROM groupby_counts
+WHERE last_item = 1
+```
+| customer | item  | order\_date              | last\_item |
+| -------- | ----- | ------------------------ | ---------- |
+| A        | sushi | 2021-01-01T00:00:00.000Z | 1          |
+| A        | curry | 2021-01-01T00:00:00.000Z | 1          |
+| B        | curry | 2021-01-01T00:00:00.000Z | 1          |
+
+
+8. What is the total items and amount spent for each member before they became a member?
 If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
