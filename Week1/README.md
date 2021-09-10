@@ -129,6 +129,7 @@ FROM groupby_counts
 
 SELECT *
 FROM rank_count
+WHERE top_choice = 1
 ```
 | customer | menu\_item | frequency | top\_choice |
 | -------- | ---------- | --------- | ----------- |
