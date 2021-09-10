@@ -228,5 +228,70 @@ WHERE last_item = 1
 
 
 8. What is the total items and amount spent for each member before they became a member?
-If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
-In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
+
+```sql
+SELECT
+  customer_id AS customer,
+  count(*) AS total_bought_items,
+  SUM(price) AS total_spent
+FROM membership
+WHERE member = ''
+GROUP BY 1
+```
+
+| customer | total\_bought\_items | total\_spent |
+| -------- | -------------------- | ------------ |
+| A        | 2                    | 25           |
+| B        | 3                    | 40           |
+
+
+9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
+
+```sql
+with points_earned AS(
+SELECT 
+  *,
+  CASE WHEN product_name = 'sushi' THEN price*20
+       ELSE price*10 END AS points_earned
+FROM membership
+WHERE member = 'x'
+)
+
+SELECT
+  customer_id AS customer,
+  SUM(points_earned) AS pointed_earned
+FROM points_earned
+GROUP BY 1
+ORDER BY 2 DESC
+```
+| customer | pointed\_earned |
+| -------- | --------------- |
+| A        | 510             |
+| B        | 440             |
+
+10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
+
+```sql
+with points_earned AS(
+SELECT 
+  *,
+  CASE WHEN DATE_PART('day', order_date::date) - DATE_PART('day', join_date::date) <=7 THEN price*20
+       WHEN DATE_PART('day', order_date::date) - DATE_PART('day', join_date::date) >7 AND product_name = 'sushi' THEN price*20
+       WHEN DATE_PART('day', order_date::date) - DATE_PART('day', join_date::date) >7 AND (product_name = 'curry' OR product_name = 'ramen') THEN price*10
+       END AS points_earned
+FROM membership
+WHERE member = 'x' AND EXTRACT(MONTH FROM order_date) = 1
+)
+
+SELECT
+  customer_id AS customer,
+  SUM(points_earned) AS january_points
+FROM points_earned
+GROUP BY 1
+ORDER BY 2 DESC
+```
+
+| customer | january\_points |
+| -------- | --------------- |
+| A        | 1020            |
+| B        | 440             |
