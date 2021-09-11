@@ -22,6 +22,9 @@ Along with an entity relationship diagram (ERD henceforth).
 ### Questions
 Danny has provided me 10 questions he is seeking to get more information about regarding his customers and the business. To answer each question I will have the SQL script and the output of the the script.
 
+**Stay tuned until the end for any parting thoughts on the challenge and what we could do for further analysese at the end.**
+
+
 1. What is the total amount each customer spent at the restaurant?
 
 ```sql
@@ -141,7 +144,7 @@ WHERE top_choice = 1
 
 
 ### Note:
-To answer the following questions, I am creating the following temp table rather than having the table as a CTE in all the queries.
+To answer the following questions, I am creating the following temp table rather than having the table as a CTE in all the queries. I am also going to assume that you cannot collect points unless you are a member. I.e. until you sign up for the membership you do not collect any points.
 
 ```sql
 DROP TABLE IF EXISTS membership;
@@ -295,3 +298,18 @@ ORDER BY 2 DESC
 | -------- | --------------- |
 | A        | 1020            |
 | B        | 440             |
+
+
+
+### End Thoughts
+This was a fun dataset to analyze and brought back memories. I have worked in various pizza restaurants in high school and in college so it was fun to work with this type of data.
+
+As the restaurant grows and more data is collected modularizing the data would be beneficial to allow for others in the future have the data at a click of a few buttons rather than having to create the queries again. Using a tool like dbt would allow for this and even put it through a visualization tool (Looker or Tableau) for the managers to make decisions easier. 
+
+**Future Analyses**
+We might also want to look at:
+- Food costs
+- Customer Acquisition Cost
+- Lifetime Value
+- Trending of busy times to optimize when employees are scheduled to work
+- Etc.
