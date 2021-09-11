@@ -10,4 +10,6 @@ Status: ✔️
 
 The first challenge that I have will be solving questions for Danny's Diner. The Japanese restaurant is looking to expand on their loyalty program.
 
+<p style="text-align:center;">
 <a href="https://8weeksqlchallenge.com/case-study-1/"><img src='Week1/Dannys-Diner.png' alt="Danny's Diner Logo" width=auto height="500"></a>
+</p>
