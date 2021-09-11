@@ -306,8 +306,7 @@ This was a fun dataset to analyze and brought back memories. I have worked in va
 
 As the restaurant grows and more data is collected modularizing the data would be beneficial to allow for others in the future have the data at a click of a few buttons rather than having to create the queries again. Using a tool like dbt would allow for this and even put it through a visualization tool (Looker or Tableau) for the managers to make decisions easier. 
 
-**Future Analyses**
-We might also want to look at:
+**Future Analyses:**
 - Food costs
 - Customer Acquisition Cost
 - Lifetime Value
