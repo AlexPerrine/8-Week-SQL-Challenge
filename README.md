@@ -11,6 +11,7 @@ Status: Done ✔️
 The first challenge that I have will be solving questions for Danny's Diner. The Japanese restaurant is looking to expand on their loyalty program.
 
 <a href="https://8weeksqlchallenge.com/case-study-1/"><img src='Week1/Dannys-Diner.png' alt="Danny's Diner Logo" width=auto height="500"></a>
+<br>
 For more information about the Week 1 Challenge, <a href="https://8weeksqlchallenge.com/case-study-1/">click here</a>.
 
 ### Second Challenge - Pizza Runner
@@ -21,4 +22,5 @@ The second challenge takes me back to my roots and my favorite food, PIZZA! I ha
 Pizza Runner is an "Uberized" pizza company that has started to recruit "Runners" to deliver pizza to people.
 
 <a href="https://8weeksqlchallenge.com/case-study-2/"> <img src="Week2/Pizza-Runner.png" alt="Pizza Runner Logo" width=auto height="500"></a>
+<br>
 For more information about the Week 2 Challenge, <a href="https://8weeksqlchallenge.com/case-study-2/">click here</a>.
