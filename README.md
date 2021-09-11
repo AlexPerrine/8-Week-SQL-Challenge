@@ -5,11 +5,20 @@ The challenge is meant to help students of SQL like myself learn SQL and all it 
 
 Over the next few weeks I will look to solve the business problems the ficticious companies are having in the case studies.
 
-### First Challenge 
-Status: ✔️
+### First Challenge - Danny's Diner
+Status: Done ✔️
 
 The first challenge that I have will be solving questions for Danny's Diner. The Japanese restaurant is looking to expand on their loyalty program.
 
-<p style="text-align:center;">
 <a href="https://8weeksqlchallenge.com/case-study-1/"><img src='Week1/Dannys-Diner.png' alt="Danny's Diner Logo" width=auto height="500"></a>
-</p>
+For more information about the Week 1 Challenge, <a href="https://8weeksqlchallenge.com/case-study-1/">click here</a>.
+
+### Second Challenge - Pizza Runner
+Status: Under Construction 🚧
+
+The second challenge takes me back to my roots and my favorite food, PIZZA! I have worked in a few pizza restaurants growing up. But the challenge that I have accepted is to help with data collect and analysis to help business growth.
+
+Pizza Runner is an "Uberized" pizza company that has started to recruit "Runners" to deliver pizza to people.
+
+<a href="https://8weeksqlchallenge.com/case-study-2/"> <img src="Week2/Pizza-Runner.png" alt="Pizza Runner Logo" width=auto height="500"></a>
+For more information about the Week 2 Challenge, <a href="https://8weeksqlchallenge.com/case-study-2/">click here</a>.
