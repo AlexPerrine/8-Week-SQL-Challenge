@@ -5,7 +5,9 @@ The challenge is meant to help students of SQL like myself learn SQL and all it 
 
 Over the next few weeks I will look to solve the business problems the ficticious companies are having in the case studies.
 
-### First Challenge
+### First Challenge 
+Status: ✔️
+
 The first challenge that I have will be solving questions for Danny's Diner. The Japanese restaurant is looking to expand on their loyalty program.
 
-<a href="https://8weeksqlchallenge.com/case-study-1/" target="_blank" rel="noopener noreferrer"><img src='Week1/Dannys-Diner.png' alt="Danny's Diner Logo" width=auto height="500"></a>
+<a href="https://8weeksqlchallenge.com/case-study-1/"><img src='Week1/Dannys-Diner.png' alt="Danny's Diner Logo" width=auto height="500"></a>
