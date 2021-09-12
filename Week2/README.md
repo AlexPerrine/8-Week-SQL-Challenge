@@ -16,6 +16,7 @@ Danny is proving me 6 datasets to use for the analysis
  - pizza_names
  - pizza_recipes
  - pizza_toppings
+<br>
 Along with an entity relationship diagram (ERD henceforth).
 
 <img src='Week2-ERD.png' alt="Entity Relationship Diagram for Week 2" width=auto height="500">
