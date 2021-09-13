@@ -157,9 +157,82 @@ ORDER BY 1
 | 104          | 3          | 0          |
 | 105          | 0          | 1          |
 
-What was the maximum number of pizzas delivered in a single order?
-For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
-How many pizzas were delivered that had both exclusions and extras?
+6. What was the maximum number of pizzas delivered in a single order?
+
+```sql
+SELECT 
+ customers.order_id,
+ COUNT(*) AS number_pizzas
+FROM customers
+JOIN run_orders
+ON customers.order_id = run_orders.order_id
+WHERE cancellation = ''
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 1
+```
+| order\_id | number\_pizzas |
+| --------- | -------------- |
+| 4         | 3              |
+
+7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
+
+```sql
+with changes_made AS(
+SELECT 
+  customers.customer_id,
+  CASE WHEN customers.exclusions !='' OR customers.extras !='' THEN 1 END AS exclusions
+FROM customers
+JOIN run_orders
+ON customers.order_id = run_orders.order_id
+WHERE cancellation = ''
+)
+
+SELECT 
+  customer_id,
+  SUM(exclusions) AS exclusions,
+  SUM(CASE WHEN exclusions IS NULL THEN 1 END) AS extras
+FROM exclusions
+GROUP BY 1
+```
+| customer\_id | exclusions | extras |
+| ------------ | ---------- | ------ |
+| 101          |            | 2      |
+| 102          |            | 3      |
+| 103          | 3          |        |
+| 104          | 2          | 1      |
+| 105          | 1          |        |
+
+1. How many pizzas were delivered that had both exclusions and extras?
+
+```sql
+with changes_made AS(
+SELECT 
+  customers.customer_id,
+  CASE WHEN customers.exclusions !='' OR customers.extras !='' THEN 1 END AS exclusions
+FROM customers
+JOIN run_orders
+ON customers.order_id = run_orders.order_id
+WHERE cancellation = ''
+),
+
+groupby_counts AS(
+SELECT 
+  customer_id,
+  SUM(exclusions) AS exclusions,
+  SUM(CASE WHEN exclusions IS NULL THEN 1 END) AS extras
+FROM exclusions
+GROUP BY 1
+)
+SELECT *
+FROM groupby_counts
+WHERE exclusions >= 1 AND extras >= 1
+```
+| customer\_id | exclusions | extras |
+| ------------ | ---------- | ------ |
+| 104          | 2          | 1      |
+
+
 What was the total volume of pizzas ordered for each hour of the day?
 What was the volume of orders for each day of the week?
 
