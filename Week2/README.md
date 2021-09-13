@@ -203,7 +203,7 @@ GROUP BY 1
 | 104          | 2          | 1      |
 | 105          | 1          |        |
 
-1. How many pizzas were delivered that had both exclusions and extras?
+8. How many pizzas were delivered that had both exclusions and extras?
 
 ```sql
 with changes_made AS(
