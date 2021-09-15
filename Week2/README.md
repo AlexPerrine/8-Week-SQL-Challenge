@@ -7,7 +7,7 @@ For more information about the <a href="https://8weeksqlchallenge.com/case-study
 Danny has created a Pizza restaurant that offers an "Uber" style delivery system called Pizza Runner. We have been given an ERD but the data requires a little bit of cleaning this time so we can better direct runners and optimize Pizza Runner's operations.
 
 ### Problem Statement
-To help pay off ther credit card debt that Danny has racked up getting Pizza Runner up and sprinting forward, we were asked to help him understand sales on Pizzas. Because we are curious we will also take a look at how well the Runners perform and the Customer Experience. Hopefully Danny is ok that we jog throught the marathon answering all the questions...
+To help pay off ther credit card debt that Danny has racked up getting Pizza Runner up and sprinting forward, we were asked to help him understand sales on Pizzas. Because we are curious we will also take a look at the pizza metrics. 
 ### Data
 Danny is proving me 6 datasets to use for the analysis
  - runnder_orders
@@ -77,9 +77,7 @@ FROM pizza_runner.runner_orders
 ```
 
 ### Questions
-Under Construction 🚧 🚧 🚧
 
-Pizza Metrics:
 1. How many pizzas were ordered?
 
 ```sql
