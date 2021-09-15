@@ -13,9 +13,9 @@ Danny is proving me 2 datasets to use for the analysis
  - plans
  - subscriptions
 
-Along with an entity relationship diagram (ERD henceforth).
+Along with an ERD.
 
-<img src='Week3-ERD.png' alt="Entity Relationship Diagram for Week 3" width=auto height="500">
+<img src='Week3-ERD.png' alt="Entity Relationship Diagram for Week 3" width=auto height="400">
 
 ### Questions
 
