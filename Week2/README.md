@@ -233,7 +233,53 @@ WHERE exclusions >= 1 AND extras >= 1
 | 104          | 2          | 1      |
 
 
-What was the total volume of pizzas ordered for each hour of the day?
-What was the volume of orders for each day of the week?
+9. What was the total volume of pizzas ordered for each hour of the day?
+
+```sql
+SELECT 
+  date_part('hour', order_time) AS hour,
+  COUNT(*) AS volumn
+FROM customers
+orde
+GROUP BY 1
+ORDER BY 1 
+```
+
+| hour | volumn |
+| ---- | ------ |
+| 11   | 1      |
+| 13   | 3      |
+| 18   | 3      |
+| 19   | 1      |
+| 21   | 3      |
+| 23   | 3      |
+
+
+10. What was the volume of orders for each day of the week?
+I am assuming that Jan 1 is a Sunday for this analysis.
+
+```sql
+SELECT 
+  CASE WHEN date_part('day', order_time)::int % 7 = 0 THEN 'sunday'
+       WHEN date_part('day', order_time)::int % 7 = 1 THEN 'monday'
+       WHEN date_part('day', order_time)::int % 7 = 2 THEN 'tuesday'
+       WHEN date_part('day', order_time)::int % 7 = 3 THEN 'wednesday'
+       WHEN date_part('day', order_time)::int % 7 = 4 THEN 'thursday'
+       WHEN date_part('day', order_time)::int % 7 = 5 THEN 'friday'
+       WHEN date_part('day', order_time)::int % 7 = 6 THEN 'saturday'
+       END AS weekday,
+  COUNT(*)
+FROM customers
+GROUP BY 1
+ORDER BY 2 DESC
+```
+
+| weekday   | volumn |
+| --------- | ------ |
+| thursday  | 5      |
+| monday    | 5      |
+| tuesday   | 3      |
+| wednesday | 1      |
+
 
 **Stay tuned until the end for any parting thoughts on the challenge and what we could do for further analysese at the end.**
