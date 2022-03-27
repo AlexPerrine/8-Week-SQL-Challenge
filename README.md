@@ -35,7 +35,7 @@ The third challenge revolves around a subscription based business filling in a g
 For more information about the Week 3 Challenge, <a href="https://8weeksqlchallenge.com/case-study-3/">click here</a>.
 
 ### Fourth Challenge - Digital Bank
-Status: Done ✔️
+Status: Under Construction 🚧
 
 The fourth challenge revolves digital bank, Data-Banks. Data Banks run just like any other digital bank, but they also have the world's most secure distributed data storage platform. This is all about calculating metrics, gorwth and forecasting.
 
