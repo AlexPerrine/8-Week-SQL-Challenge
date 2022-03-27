@@ -1,4 +1,4 @@
-# Week 3 Challenge!
+# Week 4 Challenge!
 
 <img src='bank.png' alt="Bank Logo" width=auto height="700">
 For more information about the <a href="https://8weeksqlchallenge.com/case-study-4/">week 4</a> challenge. 
