@@ -42,3 +42,12 @@ The fourth challenge revolves digital bank, Data-Banks. Data Banks run just like
 <a href="https://8weeksqlchallenge.com/case-study-4/"> <img src="Week4/bank.png" alt="Bank Logo" width=auto height="500"></a>
 <br>
 For more information about the Week 4 Challenge, <a href="https://8weeksqlchallenge.com/case-study-4/">click here</a>.
+
+### Fifth Challenge - Digital Bank
+Status: Under Construction 🚧
+
+The fifth challenge revolves digital bank, Data-Banks. Data Banks run just like any other digital bank, but they also have the world's most secure distributed data storage platform. This is all about calculating metrics, gorwth and forecasting.
+
+<a href="https://8weeksqlchallenge.com/case-study-5/"> <img src="Week5/data-mart.png" alt="Mart Logo" width=auto height="500"></a>
+<br>
+For more information about the Week 5 Challenge, <a href="https://8weeksqlchallenge.com/case-study-5/">click here</a>.
