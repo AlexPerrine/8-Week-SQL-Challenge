@@ -113,10 +113,50 @@ ON subs.plan_id = plans.plan_id
 | --------------- | ---------- |
 | 307             | 30.7       |
 
-5. How many customers have churned straight after their initial free trial - what percentage is this rounded to the nearest whole number?
-What is the number and percentage of customer plans after their initial free trial?
-What is the customer count and percentage breakdown of all 5 plan_name values at 2020-12-31?
-How many customers have upgraded to an annual plan in 2020?
-How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?
-Can you further breakdown this average value into 30 day periods (i.e. 0-30 days, 31-60 days etc)
-How many customers downgraded from a pro monthly to a basic monthly plan in 2020?
+
+5. What is the number and percentage of customer plans after their initial free trial?
+
+```sql
+WITH ranked_plans AS(
+  SELECT
+    customer_id,
+    plan_id,
+    ROW_NUMBER() OVER(
+      PARTITION BY customer_id
+      ORDER BY start_date DESC
+    )
+  FROM foodie_fi.subscriptions
+)
+SELECT
+  plans.plan_id,
+  plans.plan_name,
+  COUNT(*) AS total_customers,
+  ROUND(100 * COUNT(*) / SUM(COUNT(*)) OVER(), 1) AS percentage
+FROM ranked_plans
+INNER JOIN foodie_fi.plans as plans
+ON ranked_plans.plan_id = plans.plan_id
+GROUP BY plans.plan_id, plans.plan_name
+ORDER BY plans.plan_id
+```
+| plan\_id | plan\_name    | total\_customers | percentage |
+| -------- | ------------- | ---------------- | ---------- |
+| 0        | trial         | 1000             | 37.7       |
+| 1        | basic monthly | 546              | 20.6       |
+| 2        | pro monthly   | 539              | 20.3       |
+| 3        | pro annual    | 258              | 9.7        |
+| 4        | churn         | 307              | 11.6       |
+
+6. How many customers have upgraded to an annual plan in 2020?
+
+```sql
+SELECT 
+  plan_id,
+  COUNT(DISTINCT customer_id) AS total_annual_customers
+FROM foodie_fi.subscriptions
+WHERE plan_id = '3' AND start_date BETWEEN '2020-01-01' AND '2020-12-31'
+GROUP BY 1
+```
+| plan\_id | total\_annual\_customers |
+| -------- | ------------------------ |
+| 3        | 195                      |
+
