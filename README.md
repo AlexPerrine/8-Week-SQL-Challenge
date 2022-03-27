@@ -26,7 +26,7 @@ Pizza Runner is an "Uberized" pizza company that has started to recruit "Runners
 For more information about the Week 2 Challenge, <a href="https://8weeksqlchallenge.com/case-study-2/">click here</a>.
 
 ### Third Challenge - Foodie-Fi
-Status: Under Construction 🚧
+Status: Done ✔️
 
 The third challenge revolves around a subscription based business filling in a gap. The gap being there isn't a streaming service that is dedicated to only cooking and food related shows.
 
