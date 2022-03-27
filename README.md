@@ -46,7 +46,7 @@ For more information about the Week 4 Challenge, <a href="https://8weeksqlchalle
 ### Fifth Challenge - Digital Bank
 Status: Under Construction 🚧
 
-The fifth challenge revolves digital bank, Data-Banks. Data Banks run just like any other digital bank, but they also have the world's most secure distributed data storage platform. This is all about calculating metrics, gorwth and forecasting.
+The fifth challenge revolves around Danny's new venture, online supermarket internation operations which specialized in fresh produce. Danny needs help to quantify the impact of this change on the sales performance for Data Mart and its separate business areas.
 
 <a href="https://8weeksqlchallenge.com/case-study-5/"> <img src="Week5/data-mart.png" alt="Mart Logo" width=auto height="500"></a>
 <br>
