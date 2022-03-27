@@ -114,5 +114,30 @@ FROM customers
 | 5                       | 509                      |
 
 3. For each month - how many Data Bank customers make more than 1 deposit and either 1 purchase or 1 withdrawal in a single month?
-What is the closing balance for each customer at the end of the month?
-What is the percentage of customers who increase their closing balance by more than 5%?
+```sql
+WITH customer_months AS(
+  SELECT
+    DATE_TRUNC('mon', txn_date)::DATE AS month,
+    customer_id,
+    SUM(CASE WHEN txn_type = 'deposit' THEN 0 ELSE 1 END) AS deposit_count,
+    SUM(CASE WHEN txn_type = 'purchase' THEN 0 ELSE 1 END) AS purchase_count,
+    SUM(CASE WHEN txn_type = 'withdrawl' THEN 0 ELSE 1 END) AS withdrawl_count
+  FROM data_bank.customer_transactions
+  GROUP BY month, customer_id
+)
+
+SELECT
+  month,
+  COUNT(DISTINCT customer_id) AS customer
+FROM customer_months
+WHERE deposit_count >= 1 AND (purchase_count > 1 OR withdrawl_count > 1 )
+GROUP BY month
+ORDER BY month
+```
+| month                    | customer |
+| ------------------------ | -------- |
+| 2020-01-01T00:00:00.000Z | 295      |
+| 2020-02-01T00:00:00.000Z | 365      |
+| 2020-03-01T00:00:00.000Z | 377      |
+| 2020-04-01T00:00:00.000Z | 178      |
+
