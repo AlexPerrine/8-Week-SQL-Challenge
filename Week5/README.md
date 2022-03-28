@@ -15,11 +15,62 @@ Danny has 3 key questions he wants us to help solve.
 ### Data
 The data in this study also needs cleaning prior to being able to analyze the data.
 Steps taken to clean the data:
-    1. 
+    1. Convert the week_date to a DATE format
+    2. Add a week_number as the second column for each week_date value
+    3. Add a month_number with the calendar month for each week_date value as the 3rd column
+    4. Add a calendar_year column as the 4th coulmn containing either 2018,2019,2020
+    5. Add a column called age_band after the original segment using the following
+        - 1 -> Young Adult
+        - 2 -> Middle Aged
+        - 3 or 4 -> Retirees
+    6. Add a demographic column using the following segment values
+        - C -> Couples
+        - F -> Families
+    7. Ensure all null string values with an "Unknown" string in the original segment column as well as the new age_band and demographics
+    8. Generate a new avg_transaction column as the sales value divided by transactions rounded to 2 decimal places.
 
+```sql
+DROP TABLE IF EXISTS data_mart.clean_weekly_sales;
+CREATE TABLE data_mart.clean_weekly_sales AS
+SELECT 
+  TO_DATE(week_date, 'DD/MM/YY') AS week_date,
+  DATE_PART('week', TO_DATE(week_date, 'DD/MM/YY')) AS week_number,
+  DATE_PART('mon', TO_DATE(week_date, 'DD/MM/YY')) AS month_number,
+  DATE_PART('year', TO_DATE(week_date, 'DD/MM/YY')) AS year,
+  region,
+  platform,
+  CASE 
+    WHEN left(segment, 1) = '1' THEN 'Young Adult'
+    WHEN left(segment, 1) = '2' THEN 'Middle Aged'
+    WHEN left(segment, 1) IN('3','4') THEN 'Retirees'
+    ELSE 'Unknown'
+  END AS age_band,
+  CASE
+    WHEN left(segment, 1) = 'C' THEN 'Couples'
+    WHEN left(segment, 1) = 'F' THEN 'Families'
+    ELSE 'Unknown'
+  END AS demographics,
+  customer_type,
+  transactions,
+  sales,
+  ROUND(sales / transactions, 2) as avg_transaction
+FROM data_mart.weekly_sales;
+```
+
+I will be using the newly constructed cleaned table for the following analysis
 #### Data Exploration:
-What day of the week is used for each week_date value?
-What range of week numbers are missing from the dataset?
+1. What day of the week is used for each week_date value?
+```sql
+SELECT 
+  TO_CHAR(week_date,'Day') AS day_of_week
+FROM data_mart.clean_weekly_sales
+LIMIT 1
+```
+| day\_of\_week |
+| ------------- |
+| Monday        |
+
+2. What range of week numbers are missing from the dataset?
 How many total transactions were there for each year in the dataset?
 What is the total sales for each region for each month?
 What is the total count of transactions for each platform
