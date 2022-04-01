@@ -40,9 +40,9 @@ SELECT
   region,
   platform,
   CASE 
-    WHEN left(segment, 1) = '1' THEN 'Young Adult'
-    WHEN left(segment, 1) = '2' THEN 'Middle Aged'
-    WHEN left(segment, 1) IN('3','4') THEN 'Retirees'
+    WHEN right(segment, 1) = '1' THEN 'Young Adult'
+    WHEN right(segment, 1) = '2' THEN 'Middle Aged'
+    WHEN right(segment, 1) IN('3','4') THEN 'Retirees'
     ELSE 'Unknown'
   END AS age_band,
   CASE
@@ -71,13 +71,216 @@ LIMIT 1
 | Monday        |
 
 2. What range of week numbers are missing from the dataset?
-How many total transactions were there for each year in the dataset?
-What is the total sales for each region for each month?
-What is the total count of transactions for each platform
-What is the percentage of sales for Retail vs Shopify for each month?
-What is the percentage of sales by demographic for each year in the dataset?
-Which age_band and demographic values contribute the most to Retail sales?
-Can we use the avg_transaction column to find the average transaction size for each year for Retail vs Shopify? If not - how would you calculate it instead?
+
+This doesn't exactly answer the question but it allows us to see what numbers are missing. The numbers are 1-12 and 37-52.
+```sql
+SELECT week_number
+FROM data_mart.clean_weekly_sales
+GROUP BY 1
+ORDER BY 1
+```
+| week\_number |
+| ------------ |
+| 13           |
+| 14           |
+| 15           |
+| 16           |
+| 17           |
+| 18           |
+| 19           |
+| 20           |
+| 21           |
+| 22           |
+| 23           |
+| 24           |
+| 25           |
+| 26           |
+| 27           |
+| 28           |
+| 29           |
+| 30           |
+| 31           |
+| 32           |
+| 33           |
+| 34           |
+| 35           |
+| 36           |
+
+3. How many total transactions were there for each year in the dataset?
+
+```sql
+SELECT 
+  year,
+  sum(transactions) as total_transactions
+FROM data_mart.clean_weekly_sales
+group by 1
+order by 1
+```
+| year | total\_transactions |
+| ---- | ------------------- |
+| 2018 | 346406460           |
+| 2019 | 365639285           |
+| 2020 | 375813651           |
+
+4. What is the total sales for each region for each month?
+
+```sql
+SELECT 
+  year,
+  month_number,
+  region,
+  RANK () OVER ( 
+		PARTITION BY year, month_number
+		ORDER BY sum(sales) DESC
+	) sales_rank,
+  sum(sales) as total_sales
+FROM data_mart.clean_weekly_sales
+GROUP BY 1, 2, 3
+ORDER BY 1
+LIMIT 7
+```
+| year | month\_number | region        | sales\_rank | total\_sales |
+| ---- | ------------- | ------------- | ----------- | ------------ |
+| 2018 | 3             | OCEANIA       | 1           | 175777460    |
+| 2018 | 3             | AFRICA        | 2           | 130542213    |
+| 2018 | 3             | ASIA          | 3           | 119180883    |
+| 2018 | 3             | USA           | 4           | 52734998     |
+| 2018 | 3             | CANADA        | 5           | 33815571     |
+| 2018 | 3             | SOUTH AMERICA | 6           | 16302144     |
+| 2018 | 3             | EUROPE        | 7           | 8402183      |
+
+5. What is the total count of transactions for each platform
+
+```sql
+SELECT 
+  platform,
+  sum(transactions) as total_transactions
+FROM data_mart.clean_weekly_sales
+GROUP BY 1
+ORDER BY 2 DESC
+```
+| platform | total\_transactions |
+| -------- | ------------------- |
+| Retail   | 1081934227          |
+| Shopify  | 5925169             |
+
+6. What is the percentage of sales for Retail vs Shopify for each month?
+
+```sql
+with platform_total_sales AS(
+SELECT 
+  year,
+  month_number,
+  platform,
+  sum(sales) as monthly_total_sales
+FROM data_mart.clean_weekly_sales
+GROUP BY 1, 2, 3
+ORDER BY 1, 2, 4 DESC
+)
+
+SELECT
+  year,
+  month_number,
+  ROUND(
+    100 * MAX(CASE WHEN platform = 'Retail' then monthly_total_sales ELSE NULL END)/sum(monthly_total_sales)
+    ,2) AS retail_percent,
+    ROUND(
+    100 * MAX(CASE WHEN platform = 'Shopify' then monthly_total_sales ELSE NULL END)/sum(monthly_total_sales)
+    ,2) AS shopify_percent
+  FROM platform_total_sales
+  GROUP BY 1,2
+  ```
+  | year | month\_number | retail\_percent | shopify\_percent |
+| ---- | ------------- | --------------- | ---------------- |
+| 2018 | 3             | 97.92           | 2.08             |
+| 2018 | 4             | 97.93           | 2.07             |
+| 2018 | 5             | 97.73           | 2.27             |
+| 2018 | 6             | 97.76           | 2.24             |
+| 2018 | 7             | 97.75           | 2.25             |
+| 2018 | 8             | 97.71           | 2.29             |
+| 2018 | 9             | 97.68           | 2.32             |
+| 2019 | 3             | 97.71           | 2.29             |
+| 2019 | 4             | 97.80           | 2.20             |
+| 2019 | 5             | 97.52           | 2.48             |
+| 2019 | 6             | 97.42           | 2.58             |
+| 2019 | 7             | 97.35           | 2.65             |
+| 2019 | 8             | 97.21           | 2.79             |
+| 2019 | 9             | 97.09           | 2.91             |
+| 2020 | 3             | 97.30           | 2.70             |
+| 2020 | 4             | 96.96           | 3.04             |
+| 2020 | 5             | 96.71           | 3.29             |
+| 2020 | 6             | 96.80           | 3.20             |
+| 2020 | 7             | 96.67           | 3.33             |
+| 2020 | 8             | 96.51           | 3.49             |
+
+7. What is the percentage of sales by demographic for each year in the dataset?
+
+```sql
+SELECT
+  year,
+  demographics,
+  SUM(sales) as yearly_sales,
+  ROUND(
+    (100 * sum(sales)::NUMERIC / SUM(sum(sales)) OVER(PARTITION BY demographics))::NUMERIC
+  ,2) AS percentage
+FROM data_mart.clean_weekly_sales
+GROUP BY 1,2
+ORDER BY 1,2
+```
+| year | demographics | yearly\_sales | percentage |
+| ---- | ------------ | ------------- | ---------- |
+| 2018 | Couples      | 3402388688    | 30.38      |
+| 2018 | Families     | 4125558033    | 31.25      |
+| 2018 | Unknown      | 5369434106    | 32.86      |
+| 2019 | Couples      | 3749251935    | 33.47      |
+| 2019 | Families     | 4463918344    | 33.81      |
+| 2019 | Unknown      | 5532862221    | 33.86      |
+| 2020 | Couples      | 4049566928    | 36.15      |
+| 2020 | Families     | 4614338065    | 34.95      |
+| 2020 | Unknown      | 5436315907    | 33.27      |
+
+8. Which age_band and demographic values contribute the most to Retail sales?
+
+```sql
+SELECT
+  age_band,
+  demographics,
+  ROUND(100*SUM(sales) / SUM(SUM(sales)) OVER(), 2) AS sales_contribution_percent
+FROM data_mart.clean_weekly_sales
+WHERE platform = 'Retail'
+GROUP BY 1,2
+ORDER BY 3 DESC
+```
+| age\_band    | demographics | sales\_contribution\_percent |
+| ------------ | ------------ | ---------------------------- |
+| Unknown      | Unknown      | 40.52                        |
+| Retirees     | Families     | 16.73                        |
+| Retirees     | Couples      | 16.07                        |
+| Middle Aged  | Families     | 10.98                        |
+| Young Adults | Couples      | 6.56                         |
+| Middle Aged  | Couples      | 4.68                         |
+| Young Adults | Families     | 4.47                         |
+
+9. Can we use the avg_transaction column to find the average transaction size for each year for Retail vs Shopify? If not - how would you calculate it instead?
+
+The answer is no, we cannot use the avg_transaction column. If we were to use that column we would essentially be finding the average of the average. So to calculate the annual average transaction size, we have to find the sum of sales and sum of transactions for each year.
+```sql
+SELECT 
+  year,
+  platform,
+  SUM(sales)/ sum(transactions) AS avg_annual_transaction
+FROM data_mart.clean_weekly_sales
+GROUP BY 1,2
+ORDER BY 1,3 DESC
+```
+| year | platform | avg\_annual\_transaction |
+| ---- | -------- | ------------------------ |
+| 2018 | Shopify  | 192                      |
+| 2018 | Retail   | 36                       |
+| 2019 | Shopify  | 183                      |
+| 2019 | Retail   | 36                       |
+| 2020 | Shopify  | 179                      |
+| 2020 | Retail   | 36                       |
 
 #### Before & After Analysis
 This technique is usually used when we inspect an important event and want to inspect the impact before and after a certain point in time.
