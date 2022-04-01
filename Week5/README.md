@@ -290,7 +290,50 @@ Taking the week_date value of 2020-06-15 as the baseline week where the Data Mar
 We would include all week_date values for 2020-06-15 as the start of the period after the change and the previous week_date values would be before
 
 Using this analysis approach - answer the following questions:
+1. What is the total sales for the 4 weeks before and after 2020-06-15? What is the growth or reduction rate in actual values and percentage of sales?
 
-What is the total sales for the 4 weeks before and after 2020-06-15? What is the growth or reduction rate in actual values and percentage of sales?
-What about the entire 12 weeks before and after?
-How do the sale metrics for these 2 periods before and after compare with the previous years in 2018 and 2019?
+```sql
+SELECT week_number
+FROM data_mart.clean_weekly_sales
+WHERE week_date = '2020-06-15'
+LIMIT 1
+```
+| week\_number |
+| ------------ |
+| 25           |
+
+We will need to find the 4 weeks before and after 25 to then get the sales and percent change
+```sql
+with cte_2020 as(
+SELECT 
+  CASE
+    WHEN week_number BETWEEN 21 AND 24 THEN '4_weeks_prior'
+    WHEN week_number BETWEEN 25 AND 28 THEN '4_weeks_after'
+  END AS period_name,
+  SUM(sales) AS total_sales,
+  SUM(transactions) AS total_transactions,
+  SUM(sales) / SUM(transactions) AS avg_transaction
+FROM data_mart.clean_weekly_sales
+WHERE week_number BETWEEN 21 and 28
+  AND year = '2020'
+GROUP BY period_name
+),
+
+sales_difference AS(
+SELECT 
+  period_name,
+  total_sales - LAG(total_sales) OVER (ORDER BY period_name) AS sales_diff,
+  ROUND(
+    100 * ((total_sales::NUMERIC / LAG(total_sales) OVER(ORDER BY period_name)) - 1), 2) AS percent_change
+FROM cte_2020
+)
+
+SELECT
+  sales_diff,
+  percent_change
+FROM sales_difference
+WHERE sales_diff IS NOT NULL
+```
+| sales\_diff | percent\_change |
+| ----------- | --------------- |
+| 26884188    | 1.16            |
