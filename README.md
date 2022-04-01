@@ -43,11 +43,20 @@ The fourth challenge revolves digital bank, Data-Banks. Data Banks run just like
 <br>
 For more information about the Week 4 Challenge, <a href="https://8weeksqlchallenge.com/case-study-4/">click here</a>.
 
-### Fifth Challenge - Digital Bank
-Status: Under Construction 🚧
+### Fifth Challenge - Data Mart
+Status: Done ✔️
 
 The fifth challenge revolves around Danny's new venture, online supermarket internation operations which specialized in fresh produce. Danny needs help to quantify the impact of this change on the sales performance for Data Mart and its separate business areas.
 
 <a href="https://8weeksqlchallenge.com/case-study-5/"> <img src="Week5/data-mart.png" alt="Mart Logo" width=auto height="500"></a>
 <br>
 For more information about the Week 5 Challenge, <a href="https://8weeksqlchallenge.com/case-study-5/">click here</a>.
+
+### Sixth Challenge - Clique Bait
+Status: Under Construction 🚧
+
+The Sixth challenge follows the Seafoodprenuer and CEO Danny. I am required to support Danny's vision and analyze the data and come up with creative solutions to calculate funnel rollout rates for Clique Bait's online store
+
+<a href="https://8weeksqlchallenge.com/case-study-6/"> <img src="Week6/cliquew-bait.png" alt="Clique Bait Logo" width=auto height="500"></a>
+<br>
+For more information about the Week 6 Challenge, <a href="https://8weeksqlchallenge.com/case-study-6/">click here</a>.
