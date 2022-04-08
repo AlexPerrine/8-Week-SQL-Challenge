@@ -122,6 +122,3 @@ GROUP BY 1
 | Luxury            | 3032        | 1870       |
 | Shellfish         | 6204        | 3792       |
 | Fish              | 4633        | 2789       |
-
-
-

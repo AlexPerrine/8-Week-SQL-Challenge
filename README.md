@@ -53,7 +53,7 @@ The fifth challenge revolves around Danny's new venture, online supermarket inte
 For more information about the Week 5 Challenge, <a href="https://8weeksqlchallenge.com/case-study-5/">click here</a>.
 
 ### Sixth Challenge - Clique Bait
-Status: Under Construction 🚧
+Status: Done ✔️
 
 The Sixth challenge follows the Seafoodprenuer and CEO Danny. I am required to support Danny's vision and analyze the data and come up with creative solutions to calculate funnel rollout rates for Clique Bait's online store
 
