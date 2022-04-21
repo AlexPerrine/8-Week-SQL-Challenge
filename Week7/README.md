@@ -231,9 +231,57 @@ WHERE top_selling = 1
 | Socks   | Navy Solid Socks - Mens       | 3792            |
 
 4. What is the total quantity, revenue and discount for each category?
-What is the top selling product for each category?
-What is the percentage split of revenue by product for each segment?
-What is the percentage split of revenue by segment for each category?
-What is the percentage split of total revenue by category?
-What is the total transaction “penetration” for each product? (hint: penetration = number of transactions where at least 1 quantity of a product was purchased divided by total number of transactions)
-What is the most common combination of at least 1 quantity of any 3 products in a 1 single transaction?
+```sql
+select
+
+  prod.category_name                                    as catetory
+  , sum(sales.qty)                                      as total_quantity
+  , sum(sales.price * sales.qty)                        as total_revenue
+  , sum(sales.price * sales.qty * sales.discount) / 100 as total_discount
+  
+from balanced_tree.sales as sales
+inner join balanced_tree.product_details as prod
+on sales.prod_id = prod.product_id
+group by 1
+```
+| catetory | total\_quantity | total\_revenue | total\_discount  |
+| -------- | --------------- | -------------- | ---------------- |
+| Mens     | 22482           | 714120         | 86607.71         |
+| Womens   | 22734           | 575333         | 69621.43         |
+
+5. What is the top selling product for each category?
+```sql
+with top_product_cte as(
+select
+
+  prod.category_name                     as category
+  , prod.product_name                    as product
+  , sum(sales.qty)                       as total_quantity
+  , sum(sales.qty * sales.price)       as total_revenue
+  , rank() over(partition by prod.category_name
+                order by sum(sales.qty)) as product_rank
+  
+from balanced_tree.sales as sales
+inner join balanced_tree.product_details as prod
+on sales.prod_id = prod.product_id
+group by 1,2
+)
+
+select
+  category
+  , product
+  , total_quantity
+  , total_revenue
+from top_product_cte
+where product_rank = 1
+```
+| category | product                      | total\_quantity | total\_revenue |
+| -------- | ---------------------------- | --------------- | -------------- |
+| Mens     | Teal Button Up Shirt - Mens  | 3646            | 36460          |
+| Womens   | Cream Relaxed Jeans - Womens | 3707            | 37070          |
+
+6. What is the percentage split of revenue by product for each segment?
+7. What is the percentage split of revenue by segment for each category?
+8. What is the percentage split of total revenue by category?
+9. What is the total transaction “penetration” for each product? (hint: penetration = number of transactions where at least 1 quantity of a product was purchased divided by total number of transactions)
+10. What is the most common combination of at least 1 quantity of any 3 products in a 1 single transaction?
