@@ -62,9 +62,18 @@ The Sixth challenge follows the Seafoodprenuer and CEO Danny. I am required to s
 For more information about the Week 6 Challenge, <a href="https://8weeksqlchallenge.com/case-study-6/">click here</a>.
 
 ### Seventh Challenge - Balance Tree
-Status: Under Construction 🚧
+Status: Done ✔️
 
 The Seventh challenge follows the Balanced Tree Clothing Company which prides themselves on providing an optimised range of clothing and lifestyle wear forthe modern adventurer. The CEO Danny, is asking for assistance for the merchandising team as they analyze their sales performance and to generate basic financial reports to share with the wider business.
+
+<a href="https://8weeksqlchallenge.com/case-study-7/"> <img src="Week7/balance-tree.png" alt="Balance Tree Logo" width=auto height="500"></a>
+<br>
+For more information about the Week 7 Challenge, <a href="https://8weeksqlchallenge.com/case-study-7/">click here</a>.
+
+### Eigth Challenge - Balance Tree
+Status: Under Construction 🚧
+
+The Eigth challenge follows Danny in his new adventure of Fresh Segments. A digital marketing agency that helps other business analyze trends in online click behanvoir for their unique customer base.
 
 <a href="https://8weeksqlchallenge.com/case-study-7/"> <img src="Week7/balance-tree.png" alt="Balance Tree Logo" width=auto height="500"></a>
 <br>
