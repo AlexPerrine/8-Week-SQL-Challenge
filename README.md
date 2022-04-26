@@ -75,6 +75,6 @@ Status: Under Construction 🚧
 
 The Eigth challenge follows Danny in his new adventure of Fresh Segments. A digital marketing agency that helps other business analyze trends in online click behanvoir for their unique customer base.
 
-<a href="https://8weeksqlchallenge.com/case-study-8/"> <img src="Week8/fresh-segment.png" alt="Fresh Segment Logo" width=auto height="500"></a>
+<a href="https://8weeksqlchallenge.com/case-study-8/"> <img src="Week8/fresh-segments.png" alt="Fresh Segment Logo" width=auto height="500"></a>
 <br>
 For more information about the Week 8 Challenge, <a href="https://8weeksqlchallenge.com/case-study-8/">click here</a>.
