@@ -1,4 +1,5 @@
 # Week 8 Challenge!
+#### Under Construction 🚧
 
 <img src='fresh-segments.png' alt="Fresh Segments Logo" width=auto height="700">
 For more information about the <a href="https://8weeksqlchallenge.com/case-study-8/">week 8</a> challenge. 
