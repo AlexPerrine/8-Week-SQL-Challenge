@@ -281,7 +281,117 @@ where product_rank = 1
 | Womens   | Cream Relaxed Jeans - Womens | 3707            | 37070          |
 
 6. What is the percentage split of revenue by product for each segment?
+
+I felt like adding in more breakdowns to work on the window functions
+
+```sql
+with top_segment_cte as(
+select
+
+  prod.segment_name              as segment
+  , prod.product_name            as product
+  , sum(sales.qty * sales.price) as total_revenue
+
+from balanced_tree.sales                 as sales
+inner join balanced_tree.product_details as prod
+on sales.prod_id = prod.product_id
+group by 1,2
+)
+
+select
+  *
+  , sum(total_revenue) over(partition by segment) as segment_total
+  , round(100 * total_revenue / sum(total_revenue) 
+          over(partition by segment), 2)          as segment_percent
+  , sum(total_revenue) over()                     as overall_revenue
+  , round(100 * total_revenue / sum(total_revenue) 
+          over(), 2)                              as overall_percent
+from top_segment_cte
+group by 1,2,3
+order by segment, total_revenue desc
+```
+| segment | product                          | total\_revenue | segment\_total | segment\_percent | overall\_revenue | overall\_percent |
+| ------- | -------------------------------- | -------------- | -------------- | ---------------- | ---------------- | ---------------- |
+| Jacket  | Grey Fashion Jacket - Womens     | 209304         | 366983         | 57.03            | 1289453          | 16.23            |
+| Jacket  | Khaki Suit Jacket - Womens       | 86296          | 366983         | 23.51            | 1289453          | 6.69             |
+| Jacket  | Indigo Rain Jacket - Womens      | 71383          | 366983         | 19.45            | 1289453          | 5.54             |
+| Jeans   | Black Straight Jeans - Womens    | 121152         | 208350         | 58.15            | 1289453          | 9.40             |
+| Jeans   | Navy Oversized Jeans - Womens    | 50128          | 208350         | 24.06            | 1289453          | 3.89             |
+| Jeans   | Cream Relaxed Jeans - Womens     | 37070          | 208350         | 17.79            | 1289453          | 2.87             |
+| Shirt   | Blue Polo Shirt - Mens           | 217683         | 406143         | 53.60            | 1289453          | 16.88            |
+| Shirt   | White Tee Shirt - Mens           | 152000         | 406143         | 37.43            | 1289453          | 11.79            |
+| Shirt   | Teal Button Up Shirt - Mens      | 36460          | 406143         | 8.98             | 1289453          | 2.83             |
+| Socks   | Navy Solid Socks - Mens          | 136512         | 307977         | 44.33            | 1289453          | 10.59            |
+| Socks   | Pink Fluro Polkadot Socks - Mens | 109330         | 307977         | 35.50            | 1289453          | 8.48             |
+| Socks   | White Striped Socks - Mens       | 62135          | 307977         | 20.18            | 1289453          | 4.82             |
+
 7. What is the percentage split of revenue by segment for each category?
+```sql
+with top_category_segment_cte as(
+select
+
+  prod.category_name             as category
+  , prod.segment_name            as segment
+  , sum(sales.qty * sales.price) as total_revenue
+
+from balanced_tree.sales                 as sales
+inner join balanced_tree.product_details as prod
+on sales.prod_id = prod.product_id
+group by
+    prod.category_id,
+    prod.category_name,
+    prod.segment_id,
+    prod.segment_name
+)
+
+select
+
+  category
+  , segment
+  , total_revenue
+  , round(100 * total_revenue / sum(total_revenue) 
+          over(partition by category), 2)          as category_segment_percent
+          
+from top_category_segment_cte
+group by 1,2,3
+order by category, total_revenue desc
+```
+| category | segment | total\_revenue | category\_segment\_percent |
+| -------- | ------- | -------------- | -------------------------- |
+| Mens     | Shirt   | 406143         | 56.87                      |
+| Mens     | Socks   | 307977         | 43.13                      |
+| Womens   | Jacket  | 366983         | 63.79                      |
+| Womens   | Jeans   | 208350         | 36.21                      |
+
 8. What is the percentage split of total revenue by category?
-9. What is the total transaction “penetration” for each product? (hint: penetration = number of transactions where at least 1 quantity of a product was purchased divided by total number of transactions)
-10. What is the most common combination of at least 1 quantity of any 3 products in a 1 single transaction?
+```sql
+with top_category_cte as(
+select
+
+  prod.category_name             as category
+  , sum(sales.qty * sales.price) as total_revenue
+
+from balanced_tree.sales                 as sales
+inner join balanced_tree.product_details as prod
+on sales.prod_id = prod.product_id
+group by
+    prod.category_id,
+    prod.category_name
+)
+
+select
+
+  category
+  , total_revenue
+  , round(100 * total_revenue / sum(total_revenue) 
+          over(), 2)          as category_percent
+          
+from top_category_cte
+group by 1,2
+order by category, total_revenue desc
+```
+| category | total\_revenue | category\_percent |
+| -------- | -------------- | ----------------- |
+| Mens     | 714120         | 55.38             |
+| Womens   | 575333         | 44.62             |
+
